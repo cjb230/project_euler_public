@@ -15,3 +15,5 @@ If you are keen to share your insights and/or wish to see how other members have
 Note: The rule about sharing solutions outside of Project Euler does not apply to the first 100 problems, as long as any discussion clearly aims to instruct methods, not just provide answers, and does not directly threaten to undermine the enjoyment of solving later problems. Problems 1 to 100 provide a wealth of helpful introductory teaching material and if you are able to respect our requirements, then we give permission for them to be discussed elsewhere.
 
 ===================
+
+/Almost/ everything here is my own work. To explain the naming, "e14.py" is my first attempt at problem 14, "e14-2.py" is my second attempt, with a different algorithm, but "e14-taujiong.py" is my implementation of an algorithm by a Project Euler user called taujiong.
