@@ -16,4 +16,4 @@ Note: The rule about sharing solutions outside of Project Euler does not apply t
 
 ===================
 
-/Almost/ everything here is my own work. To explain the naming, "e14.py" is my first attempt at problem 14, "e14-2.py" is my second attempt, with a different algorithm, but "e14-taujiong.py" is my implementation of an algorithm by a Project Euler user called taujiong.
+_Almost_ everything here is my own work. To explain the naming, "e14.py" is my first attempt at problem 14, "e14-2.py" is my second attempt, with a different algorithm, but "e14-taujiong.py" is my implementation of an algorithm by a Project Euler user called taujiong.
