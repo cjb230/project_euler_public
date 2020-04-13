@@ -29,11 +29,6 @@ def main():
     current_pentagonal_number = 1
 
     while True:
-        if triangular_n % 200000 == 0:
-            print('Triangular n = ' + str(triangular_n))
-        if triangular_n % 2000000 == 0:
-            break
-
         if current_triangular_number == current_pentagonal_number:
             hex_result = is_hexagonal(current_triangular_number)
             if hex_result and triangular_n > 1:
@@ -57,4 +52,5 @@ if __name__ == "__main__":
     main()
     end = datetime.datetime.now()
     duration = end - start
+    print()
     print(str(duration.total_seconds()) + " seconds")
