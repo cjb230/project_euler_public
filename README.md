@@ -1,6 +1,8 @@
 # Project Euler
 
 My solutions for [Project Euler](https://projecteuler.net/) problems up to problem 100. I don't (yet!) have many beyond this level.
+![Proof that I've got at least some answers right.](https://projecteuler.net/profile/cjb_230.png)
+
 
 # About the Solutions
 
