@@ -1,3 +1,4 @@
+import datetime
 import math
 
 PRIMES_DICT = {1: 2, 2: 3, 3: 5}
@@ -29,22 +30,6 @@ def prime_by_number(prime_requested):
         return generate_prime(prime_requested)
     else:
         return PRIMES_DICT[prime_requested]
-
-
-def prime_factors(factorisation_requested):
-    global PRIMES_DICT
-    prime_factors = dict()
-    residual = factorisation_requested
-    next_prime_check_index = 1
-    while residual > 1:
-        this_prime_power = 0
-        while residual % PRIMES_DICT[next_prime_check_index] == 0:
-            this_prime_power += 1
-            residual = int(residual / PRIMES_DICT[next_prime_check_index])
-        if this_prime_power > 0:
-            prime_factors[PRIMES_DICT[next_prime_check_index]] = this_prime_power
-        next_prime_check_index += 1
-    return prime_factors
 
 
 def in_primes_dict(check_value):
@@ -97,5 +82,32 @@ def is_prime(check_value):
     return result
 
 
+def main():
+    global PRIMES_DICT
+    print(prime_by_number(78499))
+    longest_sequence_length = 0
+    starting_index = 0
+    nothing_longer_possible = False
+    while nothing_longer_possible is False:
+        starting_index += 1
+        if sum(PRIMES_DICT[x] for x in range(starting_index, starting_index + longest_sequence_length + 1)) > 1000000:
+            nothing_longer_possible = True
+        next_prime_index = starting_index + 1
+        primes_total = 0
+        while primes_total + PRIMES_DICT[next_prime_index] < 1000000:
+            primes_total += PRIMES_DICT[next_prime_index]
+            if next_prime_index - starting_index > longest_sequence_length:
+                if (is_prime(primes_total)):
+                    longest_sequence_length = next_prime_index - starting_index
+                    print('PRIME: ', str(primes_total))
+                    print(' => sum from index', starting_index, '(', PRIMES_DICT[starting_index], ') to index',
+                          next_prime_index, '(', PRIMES_DICT[next_prime_index], ')')
+            next_prime_index += 1
+
+
 if __name__ == "__main__":
-    print(prime_by_number(10001))
+    start = datetime.datetime.now()
+    main()
+    end = datetime.datetime.now()
+    duration = end - start
+    print(str(duration.total_seconds()) + " seconds")

@@ -1,4 +1,6 @@
+import datetime
 import math
+import functools
 
 PRIMES_DICT = {1: 2, 2: 3, 3: 5}
 
@@ -29,22 +31,6 @@ def prime_by_number(prime_requested):
         return generate_prime(prime_requested)
     else:
         return PRIMES_DICT[prime_requested]
-
-
-def prime_factors(factorisation_requested):
-    global PRIMES_DICT
-    prime_factors = dict()
-    residual = factorisation_requested
-    next_prime_check_index = 1
-    while residual > 1:
-        this_prime_power = 0
-        while residual % PRIMES_DICT[next_prime_check_index] == 0:
-            this_prime_power += 1
-            residual = int(residual / PRIMES_DICT[next_prime_check_index])
-        if this_prime_power > 0:
-            prime_factors[PRIMES_DICT[next_prime_check_index]] = this_prime_power
-        next_prime_check_index += 1
-    return prime_factors
 
 
 def in_primes_dict(check_value):
@@ -97,5 +83,46 @@ def is_prime(check_value):
     return result
 
 
+def odd_composites():
+    num = 7
+    while True:
+        while is_prime(num):
+            num += 2
+        yield num
+        num += 2
+
+
+@functools.lru_cache(maxsize=None)
+def goldbach_number(prime, square):
+    return prime_by_number(prime) + 2 * square * square
+
+
+def main():
+    all_composites = odd_composites()
+    current_prime = 1
+    current_square = 1
+    exception_found = False
+    while exception_found is False:  # loop over composites
+        current_prime = 1
+        current_square = 1
+        this_composite = next(all_composites)
+        next_grid_sum = goldbach_number(current_prime, current_square)
+        while next_grid_sum != this_composite:
+            if next_grid_sum < this_composite:
+                current_prime += 1
+            else:  # next_grid_sum > this_composite
+                current_square += 1
+                current_prime = 1
+            if (2 * current_square * current_square) >= this_composite:
+                exception_found = True
+                break
+            next_grid_sum = goldbach_number(current_prime, current_square)
+    print(this_composite)
+
+
 if __name__ == "__main__":
-    print(prime_by_number(10001))
+    start = datetime.datetime.now()
+    main()
+    end = datetime.datetime.now()
+    duration = end - start
+    print(str(duration.total_seconds()) + " seconds")

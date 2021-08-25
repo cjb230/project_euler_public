@@ -1,3 +1,4 @@
+import datetime
 import math
 
 PRIMES_DICT = {1: 2, 2: 3, 3: 5}
@@ -97,5 +98,22 @@ def is_prime(check_value):
     return result
 
 
+def main():
+    i = 0
+    for seq_num, seq_prime in PRIMES_DICT.items():
+        if seq_prime > 56004:
+            seq_prime_string = str(seq_prime)
+
+            if seq_prime_string.count('0') > 1 or seq_prime_string.count('1') > 1 or seq_prime_string.count('2') > 1:
+                print(seq_prime)
+                i += 1
+    print(i)
+
+
 if __name__ == "__main__":
-    print(prime_by_number(10001))
+    start = datetime.datetime.now()
+    print(prime_by_number(78499))
+    main()
+    end = datetime.datetime.now()
+    duration = end - start
+    print(str(duration.total_seconds()) + " seconds")

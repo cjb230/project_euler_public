@@ -1,4 +1,6 @@
+import datetime
 import math
+import functools
 
 PRIMES_DICT = {1: 2, 2: 3, 3: 5}
 
@@ -31,22 +33,6 @@ def prime_by_number(prime_requested):
         return PRIMES_DICT[prime_requested]
 
 
-def prime_factors(factorisation_requested):
-    global PRIMES_DICT
-    prime_factors = dict()
-    residual = factorisation_requested
-    next_prime_check_index = 1
-    while residual > 1:
-        this_prime_power = 0
-        while residual % PRIMES_DICT[next_prime_check_index] == 0:
-            this_prime_power += 1
-            residual = int(residual / PRIMES_DICT[next_prime_check_index])
-        if this_prime_power > 0:
-            prime_factors[PRIMES_DICT[next_prime_check_index]] = this_prime_power
-        next_prime_check_index += 1
-    return prime_factors
-
-
 def in_primes_dict(check_value):
     global PRIMES_DICT
     if check_value < 2:
@@ -77,6 +63,7 @@ def in_primes_dict(check_value):
     return result
 
 
+@functools.lru_cache(maxsize=None)
 def is_prime(check_value):
     global PRIMES_DICT
     result = False
@@ -97,5 +84,38 @@ def is_prime(check_value):
     return result
 
 
+def odd_composites():
+    num = 7
+    while True:
+        while is_prime(num):
+            num += 2
+        yield num
+        num += 2
+
+
+def main():
+    all_composites = odd_composites()
+    this_composite = next(all_composites)
+    exception_found = False
+    while exception_found is False:  # loop over composites
+        next_square = 1
+        square_term = 2 * next_square * next_square
+        while square_term < this_composite:
+            if is_prime(this_composite - square_term):
+                break
+            else:
+                next_square += 1
+                square_term = 2 * next_square * next_square
+        if square_term < this_composite:
+            this_composite = next(all_composites)
+        else:
+            exception_found = True
+    print(this_composite)
+
+
 if __name__ == "__main__":
-    print(prime_by_number(10001))
+    start = datetime.datetime.now()
+    main()
+    end = datetime.datetime.now()
+    duration = end - start
+    print(str(duration.total_seconds()) + " seconds")

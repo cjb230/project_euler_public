@@ -1,3 +1,11 @@
+""" Strangely, using @lru_cache memoization on the is_left_truncatabale() and is_right_truncatable() functions seems to
+slow things down, not speed them up.
+
+Having looked at a couple of other solutions on the thread, fastest thing is probably to build up numbers that are left-
+truncatable, and separately build up numbers that are right-truncatable, then look for numbers that occur in both. This
+could be done by generating n+1 digit candidates from n-digit truncatable numbers, trimming out the non-truncatable
+numbers generated, then looking for numbers that occur in the left- and right-truncatable lists.
+"""
 import math
 
 PRIMES_DICT = {1: 2, 2: 3, 3: 5}
@@ -29,22 +37,6 @@ def prime_by_number(prime_requested):
         return generate_prime(prime_requested)
     else:
         return PRIMES_DICT[prime_requested]
-
-
-def prime_factors(factorisation_requested):
-    global PRIMES_DICT
-    prime_factors = dict()
-    residual = factorisation_requested
-    next_prime_check_index = 1
-    while residual > 1:
-        this_prime_power = 0
-        while residual % PRIMES_DICT[next_prime_check_index] == 0:
-            this_prime_power += 1
-            residual = int(residual / PRIMES_DICT[next_prime_check_index])
-        if this_prime_power > 0:
-            prime_factors[PRIMES_DICT[next_prime_check_index]] = this_prime_power
-        next_prime_check_index += 1
-    return prime_factors
 
 
 def in_primes_dict(check_value):
@@ -97,5 +89,46 @@ def is_prime(check_value):
     return result
 
 
+def is_truncatable(candidate):
+    if candidate < 11:
+        return False
+    else:
+        return is_left_truncatable(candidate) and is_right_truncatable(candidate)
+
+
+def is_left_truncatable(candidate):
+    if is_prime(candidate):
+        if candidate >= 10:
+            return is_left_truncatable(int(math.floor(candidate / 10)))
+        else:
+            return True
+    else:
+        return False
+
+
+def is_right_truncatable(candidate):
+    if is_prime(candidate):
+        if candidate >= 10:
+            return is_right_truncatable(int(str(candidate)[1:]))
+        else:
+            return True
+    else:
+        return False
+
+
+def main():
+    prime_index = 1
+    truncatables_found = 0
+    truncatables_sum = 0
+    while truncatables_found < 11:
+        next_prime = prime_by_number(prime_index)
+        if is_truncatable(next_prime):
+            truncatables_found += 1
+            truncatables_sum += next_prime
+            print(str(truncatables_found) + ': ' + str(next_prime))
+        prime_index += 1
+    print('Sum = ' + str(truncatables_sum))
+
+
 if __name__ == "__main__":
-    print(prime_by_number(10001))
+    main()
